@@ -4,10 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
+
 
 import db.DB;
 import db.DbException;
@@ -24,13 +27,79 @@ public class VendedorDaoJDBC implements VendedorDao {
 
 	@Override
 	public void insert(Vendedor vendedor) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement(
+					"INSERT INTO seller "
+					+"(Name, Email,BirthDate,BaseSalary,DepartmentId )"
+					+"VALUES "
+					+"(?,?,?,?,?)",
+					Statement.RETURN_GENERATED_KEYS);
+			st.setString(1, vendedor.getNome());
+			st.setString(2, vendedor.getEmail());
+			st.setDate(3, new java.sql.Date(vendedor.getNascimento().getTime()));
+			st.setDouble(4, vendedor.getSalarioBase());
+			st.setInt(5, vendedor.getDepartamento().getId());
+			
+			int linhasAfetadas = st.executeUpdate();
+			
+			if(linhasAfetadas>0) {
+				ResultSet rs = st.getGeneratedKeys();
+				if(rs.next()) {
+					int id = rs.getInt(1);
+					vendedor.setId(id);
+				}
+				DB.closeResultSet(rs);
+			}else {
+				throw new DbException("Nenhuma linha alterada");
+			}
+			
+		}catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}finally {
+			DB.closeStatement(st);
+			
+		}
 		
 	}
 
 	@Override
 	public void update(Vendedor vendedor) {
-		// TODO Auto-generated method stub
+PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement(
+					"UPDATE  seller "
+					+"SET Name=?, Email=?,BirthDate=?,BaseSalary=?,DepartmentId=? "
+					+"WHERE Id=? ",
+					Statement.RETURN_GENERATED_KEYS);
+			st.setString(1, vendedor.getNome());
+			st.setString(2, vendedor.getEmail());
+			st.setDate(3, new java.sql.Date(vendedor.getNascimento().getTime()));
+			st.setDouble(4, vendedor.getSalarioBase());
+			st.setInt(5, vendedor.getDepartamento().getId());
+			st.setInt(6, vendedor.getId());
+			
+			int linhasAfetadas = st.executeUpdate();
+			
+			if(linhasAfetadas>0) {
+				ResultSet rs = st.getGeneratedKeys();
+				if(rs.next()) {
+					int id = rs.getInt(1);
+					vendedor.setId(id);
+				}
+				DB.closeResultSet(rs);
+			}else {
+				throw new DbException("Nenhuma linha alterada");
+			}
+			
+		}catch(SQLException e) {
+			throw new DbException(e.getMessage());
+		}finally {
+			DB.closeStatement(st);
+			
+		}
 		
 	}
 

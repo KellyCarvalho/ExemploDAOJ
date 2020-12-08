@@ -1,5 +1,6 @@
 package application;
 
+import java.util.Date;
 import java.util.List;
 
 import domain.entities.Departamento;
@@ -25,7 +26,18 @@ public class Program {
 			System.out.println(v);
 		}
 		 
+		System.out.println("Testando o insert");
+		Vendedor vendedorNovo= new Vendedor(null,"Júlia","nada@gmail.com",new Date(),5000.00,dep);
+		vendedorDao.insert(vendedorNovo);
+		System.out.println("Inserido com sucesso: id "+vendedorNovo.getId());
+		System.out.println(vendedorNovo.toString());
+		Departamento dep2 = new Departamento(4,"nada");
+		System.out.println("Testando Update");
 		
+		vendedor= vendedorDao.findById(1);
+		vendedor.setNome("Manuela");
+		vendedorDao.update(vendedor);
+		System.out.println(vendedor.toString());
 		
 	}
 
