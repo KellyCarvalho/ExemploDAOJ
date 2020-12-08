@@ -3,16 +3,19 @@ package application;
 import java.util.Date;
 import java.util.List;
 
+
+
 import domain.entities.Departamento;
 import domain.entities.Vendedor;
 import model.dao.DaoFactory;
+import model.dao.DepartamentoDao;
 import model.dao.VendedorDao;
 
 public class Program {
 
 	public static void main(String[] args) {
 		
-		VendedorDao vendedorDao = DaoFactory.createSellerDao();
+		/*VendedorDao vendedorDao = DaoFactory.createSellerDao();
 		System.out.println("Testando o vendedor com o método findById()");
 		
 		Vendedor vendedor = vendedorDao.findById(3);
@@ -38,6 +41,31 @@ public class Program {
 		vendedor.setNome("Manuela");
 		vendedorDao.update(vendedor);
 		System.out.println(vendedor.toString());
+		System.out.println("Deletando");
+		vendedorDao.deleteById(vendedor.getId());*/
+		DepartamentoDao departamentoDao = DaoFactory.createDepartamentdao();
+		System.out.println("Testando o departamento com o método findById()");
+		
+		Departamento dep = departamentoDao.findById(3);
+		
+		System.out.println(dep);
+		
+		Departamento departamentoNovo= new Departamento(null,"Eletro");
+		System.out.println("Update");
+		departamentoDao.insert(departamentoNovo);
+		System.out.println(departamentoNovo.toString());
+		System.out.println("Insert");
+		departamentoNovo.setNome("eletronicos");
+		departamentoDao.update(departamentoNovo);
+		System.out.println(departamentoNovo.toString());
+		System.out.println("Delete");
+		departamentoDao.deleteById(departamentoNovo.getId());
+		System.out.print(departamentoNovo.getId());
+		
+	
+		
+		
+		
 		
 	}
 
